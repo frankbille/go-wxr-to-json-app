@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en" ng-app="wxrapp">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Wordpress WXR to JSON</title>
+		
+		<!-- Bootstrap -->
+		<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+		<style type="text/css">
+		body {
+			padding-top: 60px;
+		}
+		
+		.drop-panel {
+			border: 1px solid #bce8f1;
+			border-radius: 4px;
+			padding: 15px;
+			box-sizing: border-box;
+			-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+			box-shadow: 0 1px 1px rgba(0,0,0,.05);
+			margin-bottom: 30px;
+		}
+		
+		.drop-panel-active {
+			background-color: #bce8f1;
+			color: white;
+		}
+		
+		.drop-panel-error {
+			background-color: #f2dede;
+			border-color: #f2dede;
+		}
+		</style>
+		
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="container" ng-controller="ConvertCtrl">
+			<div class="jumbotron">
+				<h1>WordPress XML to JSON</h1>
+				<p>
+					This is an example application that converts WordPress Backup XML (WXR) to JSON.
+					The converter is written in <a href="http://www.golang.org">Go</a>, and uses this
+					<a href="http://github.com/frankbille/go-wxr-import">WXR library</a>.
+				</p>
+				<p>
+					Upload your own XML file by dropping it below. You can also try the functionality,
+					by clicking the button below to convert an <a href="/example.xml" target="_blank">example.xml</a>.
+				</p>
+				<button class="btn btn-primary" ng-click="ConvertExample('/example.xml')">Convert example.xml</button>
+			</div>
+			
+			<div class="drop-panel" ng-file-drop="Convert($files)" ng-file-drag-over-class="getDropClass($event)">
+				Drop your WordPress XML file here
+			</div>
+			
+			<div class="alert alert-danger" ng-show="error">
+				<strong>Failure to convert:</strong> {{error}}
+			</div>
+			
+			<div class="progress" ng-show="convertProgress">
+				<div class="progress-bar" role="progressbar" aria-valuenow="{{convertProgress.value}}" aria-valuemin="0" aria-valuemax="{{convertProgress.total}}" style="width:{{convertProgress.pctDone}}%;"></div>
+			</div>
+
+			<a id="json"></a>
+			<div ng-show="wxrJson">
+				<h1>Converted JSON</h1>
+				<pre>{{wxrJson}}</pre>
+			</div>
+		</div>
+
+		<script language="JavaScript" src="/js/angular-file-upload-html5-shim.min.js"></script>
+		<script language="JavaScript" src="/js/angular.min.js"></script>
+		<script language="JavaScript" src="/js/angular-file-upload.min.js"></script>
+		<script language="JavaScript" src="/js/wxrapp.js"></script>
+	</body>
+</html>
